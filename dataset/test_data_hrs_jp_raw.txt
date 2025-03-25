@@ -1,0 +1,524 @@
+1
+
+GoogleでAIエンジニアまたはRuby開発者として働いているアクティブな従業員。
+
+FilterModel(
+    affiliated_company=["Google"],
+    department=[],
+    job_type=["AIエンジニア", "Ruby開発者"],
+    contract_type=[],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=["アクティブ"]
+)
+
+2
+
+MicrosoftのAI部門で有期契約の従業員。
+
+FilterModel(
+    affiliated_company=["Microsoft"],
+    department=["AI"],
+    job_type=[],
+    contract_type=["有期契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+3
+
+Amazonでフリーランス契約のもとアクティブに働いている従業員。
+
+FilterModel(
+    affiliated_company=["Amazon"],
+    department=[],
+    job_type=[],
+    contract_type=["フリーランス契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=["アクティブ"]
+)
+
+4
+
+Teslaのエンジニアリング部門で退職した従業員。
+
+FilterModel(
+    affiliated_company=["Tesla"],
+    department=["エンジニアリング"],
+    job_type=[],
+    contract_type=[],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=["退職"]
+)
+
+5
+
+FacebookでGolang開発者またはAIエンジニアとして試用期間中の従業員。
+
+FilterModel(
+    affiliated_company=["Facebook"],
+    department=[],
+    job_type=["Golang開発者", "AIエンジニア"],
+    contract_type=["試用期間契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=["アクティブ"]
+)
+
+6
+
+Appleのソフトウェア開発部門でパートタイムで働いている従業員。
+
+FilterModel(
+    affiliated_company=["Apple"],
+    department=["ソフトウェア開発"],
+    job_type=[],
+    contract_type=["パートタイム契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+7
+
+Netflixでフルタイム契約のもと働いている「Smith」という姓の従業員。
+
+FilterModel(
+    affiliated_company=["Netflix"],
+    department=[],
+    job_type=[],
+    contract_type=["フルタイム契約"],
+    last_name=["Smith"],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+8
+
+IBMの解雇された従業員。
+
+FilterModel(
+    affiliated_company=["IBM"],
+    department=[],
+    job_type=[],
+    contract_type=[],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=["解雇"]
+)
+
+9
+
+Samsungのクラウドコンピューティング部門で短期契約のもと働いている従業員。
+
+FilterModel(
+    affiliated_company=["Samsung"],
+    department=["クラウドコンピューティング"],
+    job_type=[],
+    contract_type=["短期契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+10
+
+Sonyで従業員番号12345を持つアクティブな従業員。
+
+FilterModel(
+    affiliated_company=["Sony"],
+    department=[],
+    job_type=[],
+    contract_type=[],
+    last_name=[],
+    given_name=[],
+    employee_number=["12345"],
+    enrollment_status=["アクティブ"]
+)
+
+11
+
+OracleでAIエンジニアまたはデータサイエンティストとしてフルタイム契約の従業員。
+
+FilterModel(
+    affiliated_company=["Oracle"],
+    department=[],
+    job_type=["AIエンジニア", "データサイエンティスト"],
+    contract_type=["フルタイム契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+12
+
+Intelのハードウェアエンジニアリング部門で退職した従業員。
+
+FilterModel(
+    affiliated_company=["Intel"],
+    department=["ハードウェアエンジニアリング"],
+    job_type=[],
+    contract_type=[],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=["退職"]
+)
+
+13
+
+Ciscoで名前が「John」、姓が「Doe」の従業員。
+
+FilterModel(
+    affiliated_company=["Cisco"],
+    department=[],
+    job_type=[],
+    contract_type=[],
+    last_name=["Doe"],
+    given_name=["John"],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+14
+
+Adobeでソフトウェア開発者として有期契約で働いている従業員。
+
+FilterModel(
+    affiliated_company=["Adobe"],
+    department=[],
+    job_type=["ソフトウェア開発者"],
+    contract_type=["有期契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+15
+
+Salesforceのマーケティング部門で解雇された従業員。
+
+FilterModel(
+    affiliated_company=["Salesforce"],
+    department=["マーケティング"],
+    job_type=[],
+    contract_type=[],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=["解雇"]
+)
+
+16
+
+TikTokでリモートワークのフリーランス契約の従業員。
+
+FilterModel(
+    affiliated_company=["TikTok"],
+    department=[],
+    job_type=[],
+    contract_type=["フリーランス契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+17
+
+ZoomでアクティブなUI/UXデザイナー。
+
+FilterModel(
+    affiliated_company=["Zoom"],
+    department=[],
+    job_type=["UI/UXデザイナー"],
+    contract_type=[],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=["アクティブ"]
+)
+
+18
+
+Spotifyの音楽エンジニアリング部門でパートタイム契約の従業員。
+
+FilterModel(
+    affiliated_company=["Spotify"],
+    department=["音楽エンジニアリング"],
+    job_type=[],
+    contract_type=["パートタイム契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+19
+
+Nvidiaで試用期間中のディープラーニングエンジニア。
+
+FilterModel(
+    affiliated_company=["Nvidia"],
+    department=[],
+    job_type=["ディープラーニングエンジニア"],
+    contract_type=["試用期間契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+20
+
+SpaceXで名前が「Elon」、姓が「Musk」の従業員。
+
+FilterModel(
+    affiliated_company=["SpaceX"],
+    department=[],
+    job_type=[],
+    contract_type=[],
+    last_name=["Musk"],
+    given_name=["Elon"],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+21
+
+Twitter (X)のソーシャルメディア部門で短期契約の従業員。
+
+FilterModel(
+    affiliated_company=["Twitter (X)"],
+    department=["ソーシャルメディア"],
+    job_type=[],
+    contract_type=["短期契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+22
+
+Teslaで自動運転技術に従事しているアクティブな従業員。
+
+FilterModel(
+    affiliated_company=["Tesla"],
+    department=[],
+    job_type=["自動運転エンジニア"],
+    contract_type=[],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=["アクティブ"]
+)
+
+23
+
+Amazonでフルタイム契約のもと解雇されたソフトウェアエンジニア。
+
+FilterModel(
+    affiliated_company=["Amazon"],
+    department=[],
+    job_type=["ソフトウェアエンジニア"],
+    contract_type=["フルタイム契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=["解雇"]
+)
+
+24
+
+AlibabaのEコマース部門でフリーランス契約の従業員。
+
+FilterModel(
+    affiliated_company=["Alibaba"],
+    department=["Eコマース"],
+    job_type=[],
+    contract_type=["フリーランス契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+25
+
+Uberで試用期間契約のデータエンジニア。
+
+FilterModel(
+    affiliated_company=["Uber"],
+    department=[],
+    job_type=["データエンジニア"],
+    contract_type=["試用期間契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+26
+
+LinkedInでHRスペシャリストとしてフルタイム契約の従業員。
+
+FilterModel(
+    affiliated_company=["LinkedIn"],
+    department=[],
+    job_type=["HRスペシャリスト"],
+    contract_type=["フルタイム契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+27
+
+Instagramでアクティブなセキュリティアナリスト。
+
+FilterModel(
+    affiliated_company=["Instagram"],
+    department=[],
+    job_type=["セキュリティアナリスト"],
+    contract_type=[],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=["アクティブ"]
+)
+
+28
+
+Microsoftで退職した従業員。
+
+FilterModel(
+    affiliated_company=["Microsoft"],
+    department=[],
+    job_type=[],
+    contract_type=[],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=["退職"]
+)
+
+29
+
+Intelの半導体部門で短期契約の従業員。
+
+FilterModel(
+    affiliated_company=["Intel"],
+    department=["半導体"],
+    job_type=[],
+    contract_type=["短期契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+30
+
+Netflixでアクティブなソフトウェア開発者またはバックエンドエンジニア。
+
+FilterModel(
+    affiliated_company=["Netflix"],
+    department=[],
+    job_type=["ソフトウェア開発者", "バックエンドエンジニア"],
+    contract_type=[],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=["アクティブ"]
+)
+
+31
+
+TikTokで従業員番号98765の従業員。
+
+FilterModel(
+    affiliated_company=["TikTok"],
+    department=[],
+    job_type=[],
+    contract_type=[],
+    last_name=[],
+    given_name=[],
+    employee_number=["98765"],
+    enrollment_status=[]
+)
+
+32
+
+OracleでGolang開発者としてパートタイム契約の従業員。
+
+FilterModel(
+    affiliated_company=["Oracle"],
+    department=[],
+    job_type=["Golang開発者"],
+    contract_type=["パートタイム契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=[]
+)
+
+33
+
+Sonyのゲーム開発部門でアクティブな従業員。
+
+FilterModel(
+    affiliated_company=["Sony"],
+    department=["ゲーム開発"],
+    job_type=[],
+    contract_type=[],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=["アクティブ"]
+)
+
+34
+
+Appleでフルタイム契約のエンジニアとして働いていたが、現在解雇された従業員。
+
+FilterModel(
+    affiliated_company=["Apple"],
+    department=[],
+    job_type=["エンジニア"],
+    contract_type=["フルタイム契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=["解雇"]
+)
+
+35
+
+FacebookでUI/UXデザイナーとしてリモートワークのフリーランス契約の従業員。
+
+FilterModel(
+    affiliated_company=["Facebook"],
+    department=[],
+    job_type=["UI/UXデザイナー"],
+    contract_type=["フリーランス契約"],
+    last_name=[],
+    given_name=[],
+    employee_number=[],
+    enrollment_status=[]
+)

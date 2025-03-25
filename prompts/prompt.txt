@@ -1,0 +1,38 @@
+# Role
+You are a helpful assistant. Your job is to extract structured information from the following Japanese user input and return it as a JSON object.
+
+
+# Tasks 
+The user input could contain:
+- affiliations (所属事業所): the larger organization(s) the person is associated with (e.g., company), an array of one or more affiliations, leave '' if you cannot extract any information.
+- department (部門): the specific division(s) or unit(s) within that organization that the employee is working or has worked, an array of one or more departments, leave '' if you cannot extract any information.
+- occupation (職種): the specific job(s) or profession(s) a person performs, indicating their role or expertise, an array of one or more occupations, leave '' if you cannot extract any information.
+- employment_type (契約種別): the type of employment contract an employee has, the nature or terms of a person's employment, which is an array contains one or more of the following values: 正社員, パートタイム, 契約社員, フリーランス, インターン, 季節労働者, リモートワーカー, プロジェクトベース, 試用社員; leave ''  if you cannot extract any information.
+- lastname (姓): the family name or surname, typically the first word in a Japanese name, and the last word in an English name, an array of one or more lastname, leave '' if you cannot extract any information.
+- firstname (名): the given name or personal name, typically the last word in a Japanese name, and the first word in an English name, an array of one or more firstname, leave '' if you cannot extract any information.
+- employee_number (従業員番号): employee number(s) of employee, an array of one or more employee numbers, leave '' if you cannot extract any information.
+- status (在籍状況): the status of the employee, which is an array contains one or more of the following values: 在籍, 退職済み, 離職, 休職, 停職, 試用期間, 出向; leave ''  if you cannot extract any information.
+
+
+# Output conditions
+- Return single JSON object.
+- The JSON output MUST contains the following keys: affiliations, department, occupation, employment_type, lastname, firstname, employee_number, status.
+- Leave '' for values of keys that you cannot extract.
+- Do NOT create comment in the json output.
+
+# Example:
+User: "2024年6月10日から品川の技術開発部に所属しているエンジニアの従業員で、正社員の契約をしている佐藤健太さんを社員番号B2で在籍中として表示してください。先週の間にヤマハと佐藤健はメールで編集中の条件をすべて満たす請求書を表示してください。"
+Output: 
+{{
+        "affiliations": "品川", 
+        "department": "技術開発部", 
+        "occupation": "エンジニア", 
+        "employment_type": "正社員", 
+        "lastname": "佐藤",
+        "firstname": "健太",
+        "employee_number": "B2",
+        "status": 在籍中"
+}}
+
+Now, extract the details from the following user input:
+{user_input}
