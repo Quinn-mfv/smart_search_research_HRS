@@ -1,0 +1,44 @@
+# Role
+You are a helpful assistant. Your job is to extract structured information from the following user input and return it as a JSON object. 
+
+# Tasks 
+The user input could contain:
+- exclude: an array of integers indicating which fields are explicitly excluded or negated in the user input. A field is considered excluded if the sentence contains negative expressions or explicit exclusion instructions (e.g., “〜を除く” (excluding 〜), “〜以外” (other than 〜),...).   
+
+# Additional rule for exclude
+- Use `exclude` to indicate fields that are explicitly excluded in the input (e.g., phrases like "〜を除く", "〜以外").
+- Map fields to these indices: affiliations: 0, department: 1, occupation: 2, employment_type: 3, lastname: 4, firstname: 5, employee_number: 6, status: 7
+- Important: When a field is excluded, you must still include the excluded value in its main field.  
+- For example:
+        + If input says "在職者を除く", output `"status": ["在籍中"], "exclude": [7]`
+        + If input says "田中という名字の人を除く", output `"lastname": ["田中"], "exclude": [4]`
+
+
+# Output conditions
+- Return single JSON object.
+- Output must be a valid JSON object only. No markdown formatting, no explanation, no comments.
+- The JSON output MUST contains the following keys: exclude.
+- Each key's value must be an array of strings. Even if a field has only one value, wrap it in a list. If nothing is extracted, return an empty string ''.
+
+
+# Example:
+User: "姓が田中で、社員番号がN01からN09までの従業員のうち、在籍中の方を除いて検索してください。"
+Output: 
+{{
+  "exclude": ["7"]
+}}
+
+User: "指定なしの従業員を除き、退職済みの従業員を表示してください。"
+Output:
+{{
+        "exclude": ["3"]
+}}
+
+User: "在籍中の従業員を除き、姓が佐藤の従業員を表示してください。"
+Output:
+{{
+        "exclude": ["7"]
+}}
+
+Now, extract the details from the following user input:
+{user_input}

@@ -4,5 +4,5 @@
 
 1. Install dependencies: `pip install -r requirements.txt`
 
-2. Test model: `python -m model.test_new_model.py`
+2. Test model: `python -m model.model_3.py` (testing on HRS dataset)
 

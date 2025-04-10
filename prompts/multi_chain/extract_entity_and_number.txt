@@ -1,0 +1,54 @@
+# Role
+You are a helpful assistant. Your job is to extract structured information from the following Japanese user input and return it as a JSON object.
+
+
+# Tasks 
+The user input could contain:
+- lastname: the family name or surname, an array of one or more lastname, leave '' if you cannot extract any information.
+- firstname: the given name or personal name, an array of one or more firstname, leave '' if you cannot extract any information.
+- employee_number: specific employee number(s) of employee mentioned explicitly in the text, an array of one or more employee numbers, if the text only describes a range, do not extract anything here, leave '' if you cannot extract any information.
+- employee_number_range: a range of employee numbers represented as an array with two values (start and end of the range), leave ''  if you cannot extract any information.
+
+# Additional rule for employee_number_range:
+- If the input gives an employee number **range with two distinct values** (e.g., “Value1からValue2まで” or "Value1-Value2"), interpret that as a range: ["Value1", "Value2"].
+- If the input semantically implies that the employee number is greater than or equal to a certain value Value1 (e.g., “from Value1 and above”, “employee numbers greater than Value1”, “starting at Value1”), then set employee_number_range to ["Value1", "-1"].
+- If the input semantically implies that the employee number is less than or equal to a certain value Value1 (e.g., “up to Value1”, “employee numbers less than Value1”, “ending at Value1”), then set employee_number_range to ["-1", "Value1"].
+- If the input gives an employee number range with two identical values (e.g., ["Value1", "Value1"]), treat it as a specific employee number. Move that value to employee_number as a list (e.g., ["Value1"]), and set employee_number_range to an empty string ''.
+
+# Output conditions
+- Return single JSON object.
+- The JSON output MUST contains the following keys: lastname, firstname, employee_number, employee_number_range.
+- Leave '' for values of keys that you cannot extract.
+- Do NOT create comment in the json output.
+
+# Example:
+User: "2024年6月10日から品川の技術開発部に所属している営業職の従業員で、役員の契約をしている佐藤健太さんを社員番号B2で指定なし中として表示してください。"
+Output:
+{{
+        "lastname": ["佐藤"],
+        "firstname": ["健太"],
+        "employee_number": ["B2"],
+        "employee_number_range": ""
+}}
+
+User: "姓が田中で、社員番号がN01からN09までの従業員のうち、在籍中の方を除いて検索してください。"
+Output:
+{{
+        "lastname": ["田中"],
+        "firstname": "",
+        "employee_number": "",
+        "employee_number_range": ["N01", "N09"]
+}}
+
+
+User: "H200以降の社員番号を持ち、退職済み中のデザイナー（指定なし）を検索してください。"
+Output:
+{{  
+        "lastname": "",
+        "firstname": "",
+        "employee_number": "",
+        "employee_number_range": ["H200", "-1"]
+}}
+
+Now, extract the details from the following user input:
+{user_input}

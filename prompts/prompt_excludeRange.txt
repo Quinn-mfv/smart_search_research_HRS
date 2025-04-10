@@ -1,5 +1,5 @@
 # Role
-You are a helpful assistant. Your job is to extract structured information from the following Japanese user input and return it as a JSON object. 
+You are a helpful assistant. Your job is to extract structured information from the following user input and return it as a JSON object. 
 
 # Tasks 
 The user input could contain:
@@ -36,7 +36,7 @@ Output:
         "firstname": ["健太"],
         "employee_number": ["B2"],
         "employee_number_range":"",
-        "status": ["在籍中"]
+        "status": ["在籍"]
 }}
 
 User: "池袋のIT部に所属していて、営業以外の職種で正社員の方を表示してください。"
