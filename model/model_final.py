@@ -33,7 +33,7 @@ prompt = PromptTemplate(input_variables=['user_input'], template=template)
 chain = prompt | llm
 
 # df = pd.read_csv('dataset/test_data_HRS_exclude_range_2.csv')
-df = pd.read_csv('dataset/Ordered_Prompts_update.csv')
+df = pd.read_csv('dataset/HRS_data_update.csv')
 print(df.columns)
 # df = df[df['No'] == 68]
 print('Test length: ', df.shape[0])
@@ -52,9 +52,6 @@ for idx, row in df.iterrows():
     time_arr.append(single_timer)
     print('{} - {} - {}'.format(len(time_arr), row['No'], single_timer))
     
-    # print("data: ", row)
-    # for col, value in row.items():
-    #     print(f"{col}: {value} (type: {type(value)})")
     print('Respone: ', response) 
 
     try: 
