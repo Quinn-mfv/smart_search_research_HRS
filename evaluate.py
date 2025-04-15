@@ -5,6 +5,7 @@ from datetime import datetime
 
 # KEYS = ['payee_name', 'personal_in_charge', 'start_date', 'end_date', 'route', 'status']
 KEYS_HRS = ['affiliations', 'department', 'occupation', 'employment_type', 'lastname', 'firstname', 'employee_number', 'employee_number_range', 'status', 'exclude']
+KEYS_HRS_update = ['affiliations', 'department', 'occupation', 'employment_type', 'lastname', 'firstname', 'employee_number', 'status', 'exclude']
 
 def format_gt_HRS(gt):
     if pd.isna(gt['affiliations']) or gt['affiliations'] == '':
@@ -75,7 +76,7 @@ def format_gt_HRS(gt):
 def format_label_HRS(gt):
     # fields = ['affiliations', 'department', 'occupation', 'employment_type', 'lastname', 'firstname', 'employee_number', 'employee_number_range', 'status']
     
-    for field in KEYS_HRS:
+    for field in KEYS_HRS_update:
         if pd.isna(gt[field]) or gt[field] == '':
             gt[field] = ''
         else:
@@ -87,7 +88,7 @@ def format_label_HRS(gt):
             except json.JSONDecodeError as e:
                 print(f"JSONDecodeError for {field}: {gt[field]} - {e}")
                 gt[field] = ''
-    return gt[KEYS_HRS].to_dict()
+    return gt[KEYS_HRS_update].to_dict()
 
 def format_pred_HRS(pred):
     if 'affiliations' in pred and pred['affiliations']:
@@ -169,24 +170,14 @@ def format_pred_HRS(pred):
     else:
         pred['employee_number'] = ''
     # if 'employee_number_range' in pred and pred['employee_number_range']:
-    #     if isinstance(pred['employee_number_range'], list):
-    #         pred['employee_number_range'] = str(sorted(pred['employee_number_range'])).replace('"', '').replace("'", '')
-    #     else:
-    #         employee_number_ranges = list(map(lambda x: x.strip(), pred['employee_number_range'].split(',')))
-    #         if len(employee_number_ranges) > 1:
-    #             pred['employee_number_range'] = str(sorted(employee_number_ranges)).replace('"', '').replace("'", '')
-    #         else:
-    #             pred['employee_number_range'] = str(employee_number_ranges).replace('"', '').replace("'", '')
-
-    if 'employee_number_range' in pred and pred['employee_number_range']:
-        ranges = pred['employee_number_range']
-        if not isinstance(ranges, list):
-            ranges = list(map(lambda x: x.strip(), ranges.split(',')))
-        # if -1 not in ranges:
-        #     ranges = sorted(ranges)
-        pred['employee_number_range'] = str(ranges).replace('"', '').replace("'", '')
-    else:
-        pred['employee_number_range'] = ''
+    #     ranges = pred['employee_number_range']
+    #     if not isinstance(ranges, list):
+    #         ranges = list(map(lambda x: x.strip(), ranges.split(',')))
+    #     # if -1 not in ranges:
+    #     #     ranges = sorted(ranges)
+    #     pred['employee_number_range'] = str(ranges).replace('"', '').replace("'", '')
+    # else:
+    #     pred['employee_number_range'] = ''
     # if 'status' in pred and pred['status']:
     #     status = pred['status']
     #     if not isinstance(status, list):
@@ -218,34 +209,77 @@ def format_pred_HRS(pred):
         pred['exclude'] = ''
     return pred
 
-# def format_prediction_HRS(pred):
-#     # fields = ['affiliations', 'department', 'occupation', 'employment_type', 'lastname', 'firstname', 'employee_number', 'status']
-    
-#     for field in KEYS_HRS:
-#         if field in pred and pred[field]:
-#             if isinstance(pred[field], list):
-#                 pred[field] = str(sorted(pred[field])).replace('"', '').replace("'", '')
-#             else:
-#                 items = list(map(lambda x: x.strip(), pred[field].split(',')))
-#                 if len(items) > 1:
-#                     pred[field] = str(sorted(items)).replace('"', '').replace("'", '')
-#                 else:
-#                     pred[field] = str(items).replace('"', '').replace("'", '')
-#         else:
-#             pred[field] = ''
-    
-#     return pred
+def format_predict_HRS_update(pred):
+    for field in KEYS_HRS_update:
+        if field in pred and pred[field]:
+            if isinstance(pred[field], list):
+                pred[field] = str(sorted(pred[field])).replace('"', '').replace("'", '')
+            else:
+                tmp = list(map(lambda x: x.strip(), pred[field].split(',')))
+                if len(tmp) > 1:
+                    pred[field] = str(sorted(tmp)).replace('"', '').replace("'", '')
+                else:
+                    pred[field] = str(tmp).replace('"', '').replace("'", '')
+        else:
+            pred[field] = ''
+    return pred
+
+
+
+def format_predict_HRS_update_list(pred):
+    for field in KEYS_HRS_update:
+        if field in pred and pred[field]:
+            if isinstance(pred[field], str):
+                val = pred[field].split(',')
+                print("val: ", val)
+                if len(pred[field]) > 1:
+                    pred[field] = list(map(lambda s: s.strip(), val))
+
+                else:
+                    pred[field] = val
+        else:
+            pred[field] = []
+    return pred
+
+
+def format_label_HRS_update(gt):
+    for field in KEYS_HRS_update:
+        if pd.isna(gt[field]) or gt[field] == '':
+            gt[field] = ''
+        else:
+            try:
+                tmp = json.loads(gt[field])
+                if field != 'employee_number_range':
+                    tmp = str(sorted(tmp))        
+                gt[field] = str(tmp).replace('"', '').replace("'", '')
+            except json.JSONDecodeError as e:
+                print(f"JSONDecodeError for {field}: {gt[field]} - {e}")
+                gt[field] = ''
+    return gt[KEYS_HRS_update].to_dict()
 
 
 
 def evaluation_sample_HSR(pred, gt, prompt):
-    # print("gt: ", gt)
     gt = format_label_HRS(gt)
-    # print(f"After processing: {gt}")
-
-    # print("pred: ", pred)
     pred = format_pred_HRS(pred)
-    for k in KEYS_HRS:
+    for k in KEYS_HRS_update:
+        if pred[k] != gt[k].replace('"', '').replace("'", ''):
+            print(k)
+            print('Prompt: ', prompt)
+            print('Predict: ', pred)
+            print('groundtruth: ', gt)
+            print("False")
+            return [False, k]
+    print("True")
+    return [True, '']
+
+
+def evaluation_sample_HSR_update(pred, gt, prompt):
+    gt = format_label_HRS_update(gt)
+    # print("Before formatting:", pred)
+    pred = format_predict_HRS_update(pred)
+    # print("After formatting:", pred)
+    for k in KEYS_HRS_update:
         if pred[k] != gt[k].replace('"', '').replace("'", ''):
             print(k)
             print('Prompt: ', prompt)
