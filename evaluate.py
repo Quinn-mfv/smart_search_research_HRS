@@ -6,6 +6,8 @@ from datetime import datetime
 # KEYS = ['payee_name', 'personal_in_charge', 'start_date', 'end_date', 'route', 'status']
 KEYS_HRS = ['affiliations', 'department', 'occupation', 'employment_type', 'lastname', 'firstname', 'employee_number', 'employee_number_range', 'status', 'exclude']
 KEYS_HRS_update = ['affiliations', 'department', 'occupation', 'employment_type', 'lastname', 'firstname', 'employee_number', 'status', 'exclude']
+KEYS_HRS_update_remove_exclude = ['affiliations', 'department', 'occupation', 'employment_type', 'lastname', 'firstname', 'employee_number', 'status']
+
 
 def format_gt_HRS(gt):
     if pd.isna(gt['affiliations']) or gt['affiliations'] == '':
@@ -76,7 +78,7 @@ def format_gt_HRS(gt):
 def format_label_HRS(gt):
     # fields = ['affiliations', 'department', 'occupation', 'employment_type', 'lastname', 'firstname', 'employee_number', 'employee_number_range', 'status']
     
-    for field in KEYS_HRS_update:
+    for field in KEYS_HRS_update_remove_exclude:
         if pd.isna(gt[field]) or gt[field] == '':
             gt[field] = ''
         else:
@@ -88,7 +90,7 @@ def format_label_HRS(gt):
             except json.JSONDecodeError as e:
                 print(f"JSONDecodeError for {field}: {gt[field]} - {e}")
                 gt[field] = ''
-    return gt[KEYS_HRS_update].to_dict()
+    return gt[KEYS_HRS_update_remove_exclude].to_dict()
 
 def format_pred_HRS(pred):
     if 'affiliations' in pred and pred['affiliations']:
@@ -196,17 +198,6 @@ def format_pred_HRS(pred):
                 pred['status'] = str(statuses).replace('"', '').replace("'", '')    
     else:
         pred['status'] = ''
-    if 'exclude' in pred and pred['exclude']:
-        if isinstance(pred['exclude'], list):
-            pred['exclude'] = str(sorted(pred['exclude'])).replace('"', '').replace("'", '')
-        else:
-            excludes = list(map(lambda x: x.strip(), pred['exclude'].split(',')))
-            if len(excludes) > 1:
-                pred['exclude'] = str(sorted(excludes)).replace('"', '').replace("'", '')
-            else:
-                pred['exclude'] = str(excludes).replace('"', '').replace("'", '')
-    else:
-        pred['exclude'] = ''
     return pred
 
 def format_predict_HRS_update(pred):
@@ -262,7 +253,7 @@ def format_label_HRS_update(gt):
 def evaluation_sample_HSR(pred, gt, prompt):
     gt = format_label_HRS(gt)
     pred = format_pred_HRS(pred)
-    for k in KEYS_HRS_update:
+    for k in KEYS_HRS_update_remove_exclude:
         if pred[k] != gt[k].replace('"', '').replace("'", ''):
             print(k)
             print('Prompt: ', prompt)

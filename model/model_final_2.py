@@ -9,23 +9,20 @@ from dotenv import load_dotenv
 # from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama.llms import OllamaLLM
 from langchain.prompts import PromptTemplate
-# from fugashi import Tagger 
 
-# from langchain_groq import ChatGroq
-
-from evaluate import evaluation_sample_HSR, evaluation_sample_HSR_update
+from evaluate import evaluation_sample_HSR
 
 load_dotenv()
 OLLAMA_SERVER = os.getenv('OLLAMA_SERVER')
 
-# llm = OllamaLLM(model='qwen2.5:14b', temperature=0)
-llm = OllamaLLM(
-    base_url=OLLAMA_SERVER,
-    model="qwen2.5:14b",             
-    temperature=0
-)
+llm = OllamaLLM(model='qwen2.5:14b', temperature=0)
+# llm = OllamaLLM(
+#     base_url=OLLAMA_SERVER,
+#     model="qwen2.5:14b",             
+#     temperature=0
+# )
 
-with open('prompts/prompt_final_remove_exclude_3.txt', 'r') as fl:
+with open('prompts/prompt_final_2.txt', 'r') as fl:
     template = fl.read()
 
 print('Template: ', template)
@@ -34,13 +31,11 @@ print('Template: ', template)
 prompt = PromptTemplate(input_variables=['user_input'], template=template)
 chain = prompt | llm
 
-# df = pd.read_csv('dataset/test_data_HRS_exclude_range_2.csv')
-df = pd.read_csv('dataset/HRS_data_remove_exclude_range.csv')
+# df = pd.read_csv('dataset/Ordered_Prompts_update_2.csv')
+df = pd.read_csv('dataset/HRS_data_update_2.csv')
 print(df.columns)
-# df = df[df['No'] == 68]
 print('Test length: ', df.shape[0])
 
-# tagger = Tagger()
 
 time_arr = []
 true_count = 0
