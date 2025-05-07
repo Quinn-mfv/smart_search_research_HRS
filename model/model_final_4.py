@@ -22,7 +22,7 @@ llm = OllamaLLM(model='qwen2.5:14b', temperature=0)
 #     temperature=0
 # )
 
-with open('prompts/prompt_final_2_2.txt', 'r') as fl:
+with open('prompts/prompt_final_4.txt', 'r') as fl:
     template = fl.read()
 
 print('Template: ', template)
@@ -31,8 +31,10 @@ print('Template: ', template)
 prompt = PromptTemplate(input_variables=['user_input'], template=template)
 chain = prompt | llm
 
+# df = pd.read_csv('dataset/HRS_data_update_4.csv')
+# df = pd.read_csv('dataset/HRS_data_update_2.csv')
 df = pd.read_csv('dataset/Ordered_Prompts_update_remove_exclude.csv')
-# df = pd.read_csv('dataset/HRS_data_remove_exclude_range.csv')
+
 print(df.columns)
 print('Test length: ', df.shape[0])
 

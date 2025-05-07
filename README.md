@@ -12,10 +12,10 @@
 - Ordered_Prompts_update_2.csv: sythetic dataset with 8 fields (no excluding, ID number range case).
 
 #### Prompt:
-- prompt_final_2.txt: prompt extracts 8 fields (no excluding, ID number range case).
+- prompt_final_2_2.txt: prompt extracts 8 fields (no excluding, ID number range case).
 
 #### Model
 - model_final_2.py: model handle without ID number and excluding case (UPDATED).
-- model_final.py: model handle with excluding case.
+- (model_final.py: model handle with excluding case.)
 
 

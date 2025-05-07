@@ -20,26 +20,29 @@ Normalization of Equivalent Expressions:
 - You may normalize synonyms or clearly equivalent expressions into the exact values listed above, but ONLY for employment_type and status.
 - This is allowed ONLY WHEN the expression in the input has a direct, unambiguous semantic match.
 - Examples:
-        - "勤務中" → normalize to 在籍中 (status)
-        - "雇用形態：常勤" → normalize to 正社員 (employment_type)
+        - "勤務中" → normalize to 在籍中 (status).
+        - "雇用形態：常勤" → normalize to 正社員 (employment_type).
 - Do not normalize vague or ambiguous terms. Do not extract a value unless:
         - The exact target string is present, OR
         - The input contains a clearly equivalent expression.
 Important clarification about exclusions and normalization:
-- If the input excludes a value (e.g., "退職済みを除く"), you must:
-        - Skip that value of employment_type or status and leave that field empty (e.g., `"status": ""`).
 - Do not infer the opposite meaning. (e.g. Do not add `"在籍中"` just because `"退職済み"` is excluded).
 - Do not normalize any expression that was used in an exclusion into its logical complement.
+
+# Additional rule for excluding case
+- If the input excludes a value, you must: IGNORE and SKIP that value, the related field MUST NOT contain that excluded value.
+- E.g. input: "退職済みを除く", MUST return "status": "".
 
 # Additional rule for lastname and firstname fields
 For both `lastname` and `firstname`, do NOT include any Japanese honorific suffixes such as "さん", "様", "君", "ちゃん".
 Only extract the core name part.
 Example:
-- Input: "田中さんを表示してください。" → lastname = ["田中"], firstname = ""
-- Input: "健太君を表示してください。" → firstname = ["健太"], lastname = ""
+- Input: "田中さんを表示してください。" → lastname = ["田中"], firstname = "".
+- Input: "健太君を表示してください。" → firstname = ["健太"], lastname = "".
 
 # Output conditions
 ENSURE THAT ALL SPECIFIED CONDITIONS ARE STRICTLY FULFILLED.
+- MUST FOLLOW ALL RULES 100% EXACTLY. DO NOT CORRECT, GUESS, CHANGE, OR FIX ANYTHING.
 - Do NOT extract partial occupation terms (e.g., "開" from "開発"). Only full noun expressions should be extracted. Example: "開発の従業員" → occupation = ["開発"], NOT ["開"].
 - Return single JSON object.
 - Output must be a valid JSON object only. No markdown formatting, no explanation, no comments.
@@ -100,6 +103,19 @@ Output:
         "firstname": "",
         "employee_number": "",
         "status": ["退職済み"]
+}}
+
+Input: "部門が人事部またはIT部の従業員を除き、在籍中の従業員を表示してください。"
+Output: 
+{{
+        "affiliations": "",
+        "department": "",
+        "occupation": "",
+        "employment_type": "",
+        "lastname": "",
+        "firstname": "",
+        "employee_number": "",
+        "status": ["在籍中"]
 }}
 
 Now, extract the details from the following user input:
