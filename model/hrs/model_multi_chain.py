@@ -11,7 +11,7 @@ from langchain_ollama.llms import OllamaLLM
 from langchain.prompts import PromptTemplate
 # from langchain_groq import ChatGroq
 
-from evaluate import evaluation_sample_HSR
+from evaluation.evaluate_hrs import evaluation_sample_HSR
 
 load_dotenv()
 OLLAMA_SERVER = os.getenv('OLLAMA_SERVER')

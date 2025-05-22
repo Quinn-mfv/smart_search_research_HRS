@@ -7,25 +7,30 @@ from datetime import datetime
 from dateutil import relativedelta
 from dotenv import load_dotenv
 # from langchain_core.prompts import ChatPromptTemplate
-from langchain_ollama.llms import OllamaLLM
+# from langchain_ollama.llms import OllamaLLM
+from langchain_openai import AzureChatOpenAI
 from langchain.prompts import PromptTemplate
-# from fugashi import Tagger 
 
-# from langchain_groq import ChatGroq
+from evaluation.evaluation_si import evaluate
 
-from evaluate import evaluation_sample_HSR, evaluation_sample_HSR_update
+ENG_WEEKDAYS = { 0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday' }
+today = datetime.today()
 
 load_dotenv()
+# OLLAMA_SERVER = os.getenv('OLLAMA_SERVER')
 OLLAMA_SERVER = os.getenv('OLLAMA_SERVER')
+AZURE_OPENAI_API_KEY = os.getenv('AZURE_OPENAI_API_KEY')
+AZURE_OPENAI_ENDPOINT = os.getenv('AZURE_OPENAI_ENDPOINT')
 
-# llm = OllamaLLM(model='qwen2.5:14b', temperature=0)
-llm = OllamaLLM(
-    base_url=OLLAMA_SERVER,
-    model="qwen2.5:14b",             
-    temperature=0
+llm = AzureChatOpenAI(
+    model="gpt-4o-mini",
+    api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+    api_version="2025-03-01-preview",
 )
 
-with open('prompts/prompt_final_remove_exclude_3.txt', 'r') as fl:
+# with open('prompts/si/prompt_si.txt', 'r') as fl:
+with open('prompts/si/prompt_si_final.txt', 'r') as fl:
     template = fl.read()
 
 print('Template: ', template)
@@ -34,25 +39,32 @@ print('Template: ', template)
 prompt = PromptTemplate(input_variables=['user_input'], template=template)
 chain = prompt | llm
 
-# df = pd.read_csv('dataset/test_data_HRS_exclude_range_2.csv')
-df = pd.read_csv('dataset/HRS_data_remove_exclude_range.csv')
+df = pd.read_csv('dataset/si/data_si_name_or_number.csv')
+# df = pd.read_csv('dataset/HRS_data_remove_exclude_range.csv')
 print(df.columns)
-# df = df[df['No'] == 68]
 print('Test length: ', df.shape[0])
 
-# tagger = Tagger()
 
 time_arr = []
 true_count = 0
 err_key = []
 for idx, row in df.iterrows():
-    user_input = re.sub(r'[\s\u3000]+', '', row['prompt'])  
+    # user_input = re.sub(r'[\s\u3000]+', '', row['prompt'])  
+    user_input = row['prompt']
     # user_input = " ".join([w.surface for w in tagger(row['prompt'])])
     stime = time.time()
     
+    print('Prompt: ', user_input)
+    print('today: ', today.strftime('%Y-%m-%d'))
+    print('weekday: ', ENG_WEEKDAYS[today.weekday()])
+    
     response = chain.invoke({
         'user_input': user_input,
+        'today': today.strftime('%Y-%m-%d'),
+        'weekday': ENG_WEEKDAYS[today.weekday()],
+        'group': row['group']
     })
+    response = response.content
     single_timer = time.time() - stime
     time_arr.append(single_timer)
     print('{} - {} - {}'.format(len(time_arr), row['No'], single_timer))
@@ -64,7 +76,7 @@ for idx, row in df.iterrows():
     except Exception as ex:
         print('JSON is invalid _ error: ', ex)
         continue
-    eval_res = evaluation_sample_HSR(json_res, row, user_input)
+    eval_res = evaluate(json_res, row, user_input)
     true_count += eval_res[0]
     err_key.append(eval_res[1])
     print('\n')

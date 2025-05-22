@@ -251,6 +251,8 @@ def format_label_HRS_update(gt):
 
 
 def evaluation_sample_HSR(pred, gt, prompt):
+    # print("Before formatting gt:", gt)
+    # print("Before formatting prediction:", pred)
     gt = format_label_HRS(gt)
     pred = format_pred_HRS(pred)
     for k in KEYS_HRS_update_remove_exclude:

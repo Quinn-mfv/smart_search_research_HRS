@@ -9,10 +9,10 @@ from dotenv import load_dotenv
 # from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama.llms import OllamaLLM
 from langchain.prompts import PromptTemplate
-from constants import affiliations, department, occupation, employment_type, status
+from constants.constants_hrs import affiliations, department, occupation, employment_type, status
 # from langchain_groq import ChatGroq
 
-from evaluate import evaluation_sample_HSR
+from evaluation.evaluate_hrs import evaluation_sample_HSR
 
 load_dotenv()
 OLLAMA_SERVER = os.getenv('OLLAMA_SERVER')
@@ -24,13 +24,13 @@ llm = OllamaLLM(model='qwen2.5:14b', temperature=0)
 #     temperature=0
 # )
 
-with open('prompts/prompt_input_updateExclude_range.txt', 'r') as fl:
+with open('prompts/prompt_updateExclude_range_2.txt', 'r') as fl:
     template = fl.read()
 
 print('Template: ', template)
 
 # Create the prompt using LangChain's PromptTemplate
-prompt = PromptTemplate(input_variables=['user_input', 'affiliations', 'department', 'occupation', 'employment_type', 'status'], template=template)
+prompt = PromptTemplate(input_variables=['user_input', 'employment_type', 'status', 'employment_type_val', 'employment_type_val_2', 'status_val', 'status_val_2', 'status_val_3'], template=template)
 chain = prompt | llm
 
 # df = pd.read_csv('dataset/test_data_HRS_exclude_range_2.csv')
@@ -60,11 +60,13 @@ for idx, row in df.iterrows():
     
     response = chain.invoke({
         'user_input': user_input,
-        'affiliations': affiliations, 
-        'department': department,
-        'occupation': occupation,
         'employment_type': employment_type,
-        'status': status
+        'status': status,
+        'employment_type_val': employment_type[0],
+        'employment_type_val_2': department[1],
+        'status_val': status[0],
+        'status_val_2': status[1],
+        'status_val_3': status[2],
     })
     single_timer = time.time() - stime
     time_arr.append(single_timer)
