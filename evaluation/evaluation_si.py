@@ -38,6 +38,10 @@ def format_prediction(pred):
             pred['joined_at_to'] = ''
             pred['retired_at_from'] = ''
             pred['retired_at_to'] = ''
+        if pred['joined_at_from'] == pred['joined_at_to']:
+            pred['joined_at_to'] = ''
+        if pred['retired_at_from'] == pred['retired_at_to']:
+            pred['retired_at_to'] = ''
     return pred
 
 def evaluate(pred, gt, prompt):
@@ -53,3 +57,4 @@ def evaluate(pred, gt, prompt):
             return [False, k]
     print("True")
     return [True, '']
+

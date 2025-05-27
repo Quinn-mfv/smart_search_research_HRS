@@ -14,7 +14,8 @@ from langchain.prompts import PromptTemplate
 from evaluation.evaluation_si import evaluate
 
 ENG_WEEKDAYS = { 0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday' }
-today = datetime.today()
+today = datetime.now().strftime("%A, '%Y/%m/%d")
+print('Today: ', today)
 
 load_dotenv()
 # OLLAMA_SERVER = os.getenv('OLLAMA_SERVER')
@@ -29,6 +30,7 @@ llm = AzureChatOpenAI(
     api_version="2025-03-01-preview",
 )
 
+# with open('prompts/si/old_prompt.txt', 'r') as fl:
 with open('prompts/si/prompt_si_final.txt', 'r') as fl:
     template = fl.read()
 
@@ -38,7 +40,8 @@ print('Template: ', template)
 prompt = PromptTemplate(input_variables=['user_input'], template=template)
 chain = prompt | llm
 
-df = pd.read_csv('dataset/si/data_synthetic_si.csv')
+df = pd.read_csv('dataset/si/data_si.csv')
+# df = pd.read_csv('dataset/HRS_data_remove_exclude_range.csv')
 print(df.columns)
 print('Test length: ', df.shape[0])
 
@@ -53,13 +56,12 @@ for idx, row in df.iterrows():
     stime = time.time()
     
     print('Prompt: ', user_input)
-    print('today: ', today.strftime('%Y-%m-%d'))
-    print('weekday: ', ENG_WEEKDAYS[today.weekday()])
+    # print('today: ', today.strftime('%Y-%m-%d'))
+    # print('weekday: ', ENG_WEEKDAYS[today.weekday()])
     
     response = chain.invoke({
         'user_input': user_input,
-        'today': today.strftime('%Y-%m-%d'),
-        'weekday': ENG_WEEKDAYS[today.weekday()],
+        'today': today,
         'group': row['group']
     })
     response = response.content

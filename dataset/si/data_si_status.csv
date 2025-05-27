@@ -1,5 +1,5 @@
 No,prompt,group,name_or_number,contract_arr,group_hash,status,is_chargeable,joined_at_from,joined_at_to,retired_at_from,retired_at_to
-101,現在在籍中の従業員は誰ですか？,,,,,在籍中,,,,,
+101,在籍中の状態にある従業員は誰ですか？,,,,,在籍中,,,,,
 102,入社予定の従業員はいますか？,,,,,入社予定,,,,,
 103,退職予定の従業員は誰ですか？,,,,,退職予定,,,,,
 104,退職済の従業員を一覧で出してください。,,,,,退職済,,,,,

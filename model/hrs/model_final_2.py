@@ -15,7 +15,7 @@ from evaluation.evaluate_hrs import evaluation_sample_HSR
 
 load_dotenv()
 # OLLAMA_SERVER = os.getenv('OLLAMA_SERVER')
-OLLAMA_SERVER = os.getenv('OLLAMA_SERVER')
+# OLLAMA_SERVER = os.getenv('OLLAMA_SERVER')
 AZURE_OPENAI_API_KEY = os.getenv('AZURE_OPENAI_API_KEY')
 AZURE_OPENAI_ENDPOINT = os.getenv('AZURE_OPENAI_ENDPOINT')
 
@@ -26,7 +26,7 @@ llm = AzureChatOpenAI(
     api_version="2025-03-01-preview",
 )
 
-with open('prompts/hrs/prompt_final_2_2.txt', 'r') as fl:
+with open('prompts/hrs/prompt_openai.txt', 'r') as fl:
     template = fl.read()
 
 print('Template: ', template)
@@ -57,7 +57,7 @@ for idx, row in df.iterrows():
     print('{} - {} - {}'.format(len(time_arr), row['No'], single_timer))
     
     response = response.content
-    # print('Respone: ', response) 
+    print('Respone: ', response) 
 
     try: 
         json_res = json.loads(response)
