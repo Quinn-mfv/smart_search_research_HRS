@@ -14,6 +14,3 @@ No,prompt,group_id,authority_type,specified_name_or_number,specified_login_addre
 13,文字列「abc」が氏名または従業員番号に含まれているすべての社員を表示してください。,,,abc,,,,,,,,,
 14,社員の名前かIDの中に「Yamada」が含まれているかどうかを確認してください。,,,Yamada,,,,,,,,,
 15,氏名・社員番号に「test」が含まれている社員だけを抽出してください。,,,test,,,,,,,,,
-
-
- 
