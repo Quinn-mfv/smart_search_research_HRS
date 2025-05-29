@@ -1,4 +1,4 @@
-No,prompt,group_id,authority_type,specified_name_or_number,specified_login_address,encrypted_selected_group_id,selected_authority_type_option,selected_connected_with_option,selected_working_status_option,selected_joined_at_from,selected_joined_at_to,selected_retired_at_from,selected_retired_at_to
+No,prompt,group_id_list,authority_type_list,name_or_number,login_address,group_id,authority_type,connected,status,joined_at_from,joined_at_to,retired_at_from,retired_at_to
 1,氏名か従業員番号かいずれに”A1”の文数字が入っている一般管理者,,"[""一般従業員"",""全権管理者"",""一般管理者""]",A1,,,一般管理者,,,,,,
 2,氏名に”履歴１”の漢字が入っているが従業員番号が”A1”の文数字が入っていない全権管理者,,"[""一般従業員"",""全権管理者"",""一般管理者""]",履歴１,,,全権管理者,,,,,,
 3,田中さんは来週入社予定,,,田中,,,,,入社予定,,,2025/05/19,2025/05/24

@@ -43,7 +43,7 @@ The user input contain:
     - For example: If today is Thursday 2025/05/22, base on this context, we have「昨年10月」 = 2024/10/01 - 2024/10/31, 「先月」 = 2025/04/01 - 2025/04/30, 「先週」 = 2025/05/12 - 2025/05/18,「明日」 = Friday 2025/05/23, 「先週の金曜日」 = Friday 2025/05/16.
 
 # Output conditions
-- The JSON output must contain the following 10 keys: name_or_number, contract_arr, group_hash, status, is_chargeable, joined_at_from, joined_at_to, retired_at_from, retired_at_to.
+- The JSON output must contain the following 9 keys: name_or_number, contract_arr, group_hash, status, is_chargeable, joined_at_from, joined_at_to, retired_at_from, retired_at_to.
 - The value of each date field must follow the format yyyy/mm/dd.
 - Each field value must be a string. If no information is found, return an empty string ''.
 - Output must be a valid JSON object only. No markdown formatting, no explanation, no comments. 
@@ -96,6 +96,5 @@ Output:
 }}
 
 
-Today is {today}.
-Now, extract the details from the following user input:
+Now, base on Today is {today}, extract the details from the following user input:
 {user_input}

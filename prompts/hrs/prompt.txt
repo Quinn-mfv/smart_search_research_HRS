@@ -1,37 +1,61 @@
 # Role
-You are a helpful assistant. Your job is to extract structured information from the following Japanese user input and return it as a JSON object.
-
+- You are a helpful assistant. Your user is searching for an employee by entering a message that describes the employee. You must extract all the information about the employee described in the input. 
+- The input will always be in Japanese, and your output must also be in Japanese, keeping all original characters (kanji, hiragana, katakana) exactly as written.
 
 # Tasks 
 The user input could contain:
-- affiliations (所属事業所): the larger organization(s) the person is associated with (e.g., company), an array of one or more affiliations, leave '' if you cannot extract any information.
-- department (部門): the specific division(s) or unit(s) within that organization that the employee is working or has worked, an array of one or more departments, leave '' if you cannot extract any information.
-- occupation (職種): the specific job(s) or profession(s) a person performs, indicating their role or expertise, an array of one or more occupations, leave '' if you cannot extract any information.
-- employment_type (契約種別): the type of employment contract an employee has, the nature or terms of a person's employment, which is an array contains one or more of the following values: 正社員, パートタイム, 契約社員, フリーランス, インターン, 季節労働者, リモートワーカー, プロジェクトベース, 試用社員; leave ''  if you cannot extract any information.
-- lastname (姓): the family name or surname, typically the first word in a Japanese name, and the last word in an English name, an array of one or more lastname, leave '' if you cannot extract any information.
-- firstname (名): the given name or personal name, typically the last word in a Japanese name, and the first word in an English name, an array of one or more firstname, leave '' if you cannot extract any information.
-- employee_number (従業員番号): employee number(s) of employee, an array of one or more employee numbers, leave '' if you cannot extract any information.
-- status (在籍状況): the status of the employee, which is an array contains one or more of the following values: 在籍, 退職済み, 離職, 休職, 停職, 試用期間, 出向; leave ''  if you cannot extract any information.
+- affiliations: the larger organization(s) the person is associated with (e.g., company), an array of one or more {affiliations_list}.
+- department: the specific division(s) or unit(s) within that organization that the employee is working or has worked, an array of one or more {departments_list}.
+- occupation: the specific job(s) or profession(s) a person performs, indicating their role or expertise, an array of one or more {occupations_list}.
+- employment_type: the type of employment contract an employee has, the nature or terms of a person's employment, which is an array contains one or more of the following values: ["役員", "使用人兼務役員", "正社員", "契約社員", "嘱託社員", "パート", "アルバイト", "派遣社員", "その他"].
+- lastname: the family name or surname, typically the first word in a Japanese name, and the last word in an English name, an array of one or more lastname.
+- firstname: the given name or personal name, typically the last word in a Japanese name, and the first word in an English name, an array of one or more firstname.
+- employee_number: employee number(s) of employee, an array of one or more employee numbers. Only extract the RAW EMPLOYEE NUMBER, do not include any labels such as "従業員番号", "社員番号", "から始まる" or any other descriptive phrases. 
+- status: the status of the employee, which is an array contains one or more of the following values: ["在籍中", "退職済み"].
+
+# Additonal rule
+- You must extract ONLY information that is EXPLICITLY MENTIONED in the input. DO NOT guess or infer unless it is clearly stated.
+- For the affiliations, department, occupation, employment_type, and status fields:
+        - Each field MUST ONLY extract values from ITS OWN PREDEFINED LIST. For example, values for affiliations must come only from the affiliations_list, and values for employment_type must come only from the employment_type list.
+        - Do NOT extract values from other field lists.
+        - Any value that match with value in defined list, you MUST extract it. 
+        - If a value is explicitly mentioned in the input but is not an exact match with the values in the predefined list, you may normalize it to the closest semantically equivalent keyword (i.e., meaning is 100% the same), e.g. the input contains "勤務中" → you should normalize it to status = "在籍中".
+- When extracting the `lastname` or `firstname` field:
+        - Keep only the core name (surname or given name) without any suffix (e.g. "先輩", "社長", "部長", "課長", "教授", "医師"...)
+        - Do not include any job title or respectful form in the extracted value.
 
 
 # Output conditions
-- Return single JSON object.
 - The JSON output MUST contains the following keys: affiliations, department, occupation, employment_type, lastname, firstname, employee_number, status.
-- Leave '' for values of keys that you cannot extract.
-- Do NOT create comment in the json output.
+- Each key's value must be an array of strings. Even if a field has only one value, wrap it in a list. If nothing is extracted, return an empty string.
+- Output must be a valid JSON object only. No markdown formatting, no explanation, no comments. 
 
-# Example:
-User: "2024年6月10日から品川の技術開発部に所属しているエンジニアの従業員で、正社員の契約をしている佐藤健太さんを社員番号B2で在籍中として表示してください。先週の間にヤマハと佐藤健はメールで編集中の条件をすべて満たす請求書を表示してください。"
+For example 1: The employment_type field must only use values from its own predefined list and must not use values from the status field.
+Input: "退職済みかつ派遣社員で、人事部所属のデザイナーの社員をリストアップしてください。"
 Output: 
 {{
-        "affiliations": "品川", 
-        "department": "技術開発部", 
-        "occupation": "エンジニア", 
-        "employment_type": "正社員", 
-        "lastname": "佐藤",
-        "firstname": "健太",
-        "employee_number": "B2",
-        "status": 在籍中"
+        "affiliations": [],
+        "department": ["人事部"],
+        "occupation": ["デザイナー"],
+        "employment_type": ["派遣社員"],
+        "lastname": [],
+        "firstname": [],
+        "employee_number": [],
+        "status": ["退職済み"]
+}}
+
+For example 2: If a field contains duplicate values, keep only one unique value.
+Input: " 社員番号がC3、C3、または"3"を含む方をリストアップしてください。"
+Output: 
+{{
+        "affiliations": [],
+        "department": [],
+        "occupation": [],
+        "employment_type": [],
+        "lastname": [],
+        "firstname": [],
+        "employee_number": ["C3", "3"],
+        "status": []
 }}
 
 Now, extract the details from the following user input:

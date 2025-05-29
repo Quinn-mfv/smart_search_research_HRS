@@ -1,4 +1,4 @@
-No,prompt,group_id,authority_type,specified_name_or_number,specified_login_address,encrypted_selected_group_id,selected_authority_type_option,selected_connected_with_option,selected_working_status_option,selected_joined_at_from,selected_joined_at_to,selected_retired_at_from,selected_retired_at_to
+No,prompt,group_id_list,authority_type_list,name_or_number,login_address,group_id,authority_type,connected,status,joined_at_from,joined_at_to,retired_at_from,retired_at_to
 1,株式会社の従業員一覧を表示して,"[""株式会社"",""大阪支店"",""東京本社"",""名古屋支店""]",,,,株式会社,,,,,,,
 2,大阪支店の社員情報を教えて,"[""株式会社"",""大阪支店"",""東京本社"",""名古屋支店""]",,,,大阪支店,,,,,,,
 3,東京本社のメンバーを確認したい,"[""株式会社"",""大阪支店"",""東京本社"",""名古屋支店""]",,,,東京本社,,,,,,,

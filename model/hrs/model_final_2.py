@@ -14,8 +14,6 @@ from langchain.prompts import PromptTemplate
 from evaluation.evaluate_hrs import evaluation_sample_HSR
 
 load_dotenv()
-# OLLAMA_SERVER = os.getenv('OLLAMA_SERVER')
-# OLLAMA_SERVER = os.getenv('OLLAMA_SERVER')
 AZURE_OPENAI_API_KEY = os.getenv('AZURE_OPENAI_API_KEY')
 AZURE_OPENAI_ENDPOINT = os.getenv('AZURE_OPENAI_ENDPOINT')
 
@@ -26,7 +24,7 @@ llm = AzureChatOpenAI(
     api_version="2025-03-01-preview",
 )
 
-with open('prompts/hrs/prompt_openai.txt', 'r') as fl:
+with open('prompts/hrs/prompt.txt', 'r') as fl:
     template = fl.read()
 
 print('Template: ', template)
@@ -35,8 +33,9 @@ print('Template: ', template)
 prompt = PromptTemplate(input_variables=['user_input'], template=template)
 chain = prompt | llm
 
-df = pd.read_csv('dataset/hrs/HRS_data_update_2.csv')
-# df = pd.read_csv('dataset/HRS_data_remove_exclude_range.csv')
+
+# df = pd.read_csv('dataset/hrs/HRS_data_update_2.csv')
+df = pd.read_csv('dataset/hrs/Ordered_Prompts_update_2.csv')
 print(df.columns)
 print('Test length: ', df.shape[0])
 
@@ -45,12 +44,14 @@ time_arr = []
 true_count = 0
 err_key = []
 for idx, row in df.iterrows():
-    user_input = re.sub(r'[\s\u3000]+', '', row['prompt'])  
-    # user_input = " ".join([w.surface for w in tagger(row['prompt'])])
+    user_input = row['prompt']
     stime = time.time()
     
     response = chain.invoke({
         'user_input': user_input,
+        'affiliations_list': row['affiliations_list'],
+        'departments_list': row['departments_list'],
+        'occupations_list': row['occupations_list'],
     })
     single_timer = time.time() - stime
     time_arr.append(single_timer)
