@@ -31,6 +31,7 @@
 Each model will check the field and data corresponding to the field in its name. For example:
 - model_si_name_or_number.py: handle and evaluate name and id number field
 - model_si_date.py: evhandle and evaluatealuate 4 date field.
+- ...
 - model_si.py: handle and evaluate all of fields.
 
 ### Prompt: 
@@ -38,3 +39,23 @@ Each model will check the field and data corresponding to the field in its name.
 
 ### Run code 
 - Test SI model: `python -m model.si.model_si` 
+
+
+## Smart search for TA team
+
+### Dataset
+- data_ta.csv: ta data 
+- data_synthetic_ta.csv: synthetic/generation dataset 
+
+### Model
+Each model will check the field and data corresponding to the field in its name. For example:
+- model_ta_name_or_number.py: handle and evaluate name and id number field
+- model_ta_date.py: evhandle and evaluatealuate 4 date field.
+- ...
+- model_ta.py: handle and evaluate all of fields.
+
+### Prompt: 
+- prompt_ta.txt 
+
+### Run code 
+- Test ta model: `python -m model.ta.model_ta` 

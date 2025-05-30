@@ -4,7 +4,7 @@
 
 # Tasks
 The user input contain: 
-- name_or_number: The specific name or employee number. Only extract the RAW NAME OR NUMBER, and do not include any labels such as "従業員番号", "社員番号", "氏名", etc.
+- name_or_number: The specific name or employee number. 
 - login_address: the email or username of the employee.
 - group_id: the group, the workplace, the organization the person is associated with, one of the values in the following keywords: {group_id_list}.
 - authority_type:  the employee's permission type, one of the values in the following keywords: {authority_type_list}.
@@ -17,24 +17,29 @@ The user input contain:
 
 
 # Additional rule
-- You must extract ONLY information that is EXPLICITLY MENTIONED in the input. You must not infer values except for time-related expressions, where you are expected to resolve past/future periods based on the current date context.
+- Extract only what is clearly stated in the input. Do not guess or assume values, except for time expressions.
 - If a condition in the input explicitly describes something that should NOT match (e.g., “does not include”, “以外”, “含まれていない”), then that value must be ignored and not extracted.
 - For the group_id, authority_type, connected, and status fields:
-    - Any value that match with value in defined list, you MUST extract it. 
-    - If a value is explicitly mentioned in the input but is not an exact match with the values in the predefined list, you may normalize it to the closest semantically equivalent keyword (i.e., meaning is 100% the same), e.g. the input contains "勤務中" → "在籍中" or "全件管理者" → "全権管理者".
+    - Any value that match with value in defined list, you MUST extract it, even if no date is mentioned. 
+    - If a value is not exactly in the predefined list but has 100% identical meaning (e.g., synonyms, variants), you MAY normalize it to the correct keyword. 
+        - Example: "勤務中" → "在籍中" or "全件管理者" → "全権管理者".
 - If name_or_number, login_address, group_id, authority_type, connected, and status fields have more than one value is found for a field, return only the first one. 
-    - For example input: "氏名がAで始まる従業員、かつマネーフォワード IDがBで始まる従業員" → output MUST BE name_or_number: "A", login_address: "".
+    - For example: "氏名がAで始まる従業員、かつマネーフォワード IDがBで始まる従業員" → output MUST BE name_or_number: "A", login_address: "".
 - When extracting the `name_or_number` field:
-   - Keep only the core name (surname or given name) without any suffix (e.g. "さん", "さま", "君", "くん", "ちゃん", "先生", "先輩", "社長", "部長", "課長", "教授", "医師"...)
-    - Do not include any job title or respectful form in the extracted value.
+    - Keep only the core name (surname, given name and full name) or core id number without:
+        - any suffix (e.g. "さん", "さま", "君", "くん", "ちゃん", "先生", "先輩", "社長", "部長", "課長", "教授", "医師"...)
+        - any job title or respectful form in the extracted value such as "従業員番号", "社員番号", "氏名", etc.
+        - For example:「従業員番号A1の…」 → "A1"
 - For status field:
+    - Only assign value to status field whenever the input mentions directly the status of employee.
     - If the input includes a joined date in the past, but does not state current employment status, leave status empty.
 - For time-related fields: you MUST calculate the correct date based on meanning of the input.
     - A week begins on Monday and ends on Sunday.
     - If both joined and retired dates are explicitly mentioned (or inferable from different phrases), you must fill in both joined_at_* and retired_at_* accordingly.
-    - For example: If today is Thursday 2025-05-22, base on this context, we have「昨年12月」 : from 2024-12-01 to 2024-12-31, 「先月」 : from 2025-04-01 to 2025-04-30, 「先週」 = from 2025-05-12 to 2025-05-18,「明日」 = Friday 2025-05-23, 「先週の金曜日」 = Friday 2025-05-16.
-    - We MUST determine whether the user input refers to a past or future date. For example, if today is Thursday, 2025-05-22, and the input is “Employees who joined the company in August”, this refers to a past event. Therefore, the output MUST contain a date in the past, 'joined_at_from': "2024-08-01", 'joined_at_to': "2024-08-31".
-    - If the phrase "１年間働いた" is used without other time indicator, you may interpret that the person has joined exactly 1 year ago from now, meaning in the same month last year. For example: today = 2025/05/29 → joined_at_from = 2024/05/01, joined_at_to = 2024/05/31, similarly for "2年間働いた", "１か月間",...
+    - We MUST determine whether the user input refers to a past or future date. For example, if today is Thursday, 2025-05-22, and the input is “Employees who joined the company in August”, this refers to a past event. 
+        - Therefore, the output MUST contain a date in the past, 'joined_at_from': "2024-08-01", 'joined_at_to': "2024-08-31".
+    - If the phrase "１年間働いた" is used without other time indicator, you may interpret that the person has joined exactly 1 year ago from now, meaning in the same month last year. 
+        - For example: today = 2025/05/29 → joined_at_from = 2024/05/01, joined_at_to = 2024/05/31, similarly for "2年間働いた", "１か月間",...
 
 
 # Output conditions
@@ -43,7 +48,7 @@ The user input contain:
 - Each field value must be a string. If no information is found, return an empty string ''.
 - Output must be a valid JSON object only. No markdown formatting, no explanation, no comments. 
 
-For example 1: we ignore all information that is meant to be negative.
+For example: Negative match - we ignore all information that is meant to be negative.
 Input: 氏名に”履歴１”の漢字が入っているが従業員番号が”A1”の文数字が入っていない全権管理者
 Output:
 {{
@@ -59,7 +64,25 @@ Output:
     "retired_at_to": ""
 }}
 
-For example 2: we have context: today is Friday 2025-05-30, calculate the weekday base on the provided context.
+For example: Extract any value that match with the value of defined list. No date mentioned → joined_at_from/to remain empty.
+Input: 広島支店の一般従業員で入社予定の情報を表示して
+Output:
+{{
+    "name_or_number": "",
+    "login_address": "",
+    "group_id": "広島支店",
+    "authority_type": "一般従業員",
+    "connected": "",
+    "status": "入社予定",
+    "joined_at_from": "",
+    "joined_at_to": "",
+    "retired_at_from": "",
+    "retired_at_to": ""
+}}
+
+
+For example: Time range - we have context (use this content only for this example): today is Friday 2025-05-30, and the input mentions the time. So you MUST calculate the weekday base on the provided context.
+Only calculate joined_at_from/to and retired_at_from/to when a specific or relative time expression appears (e.g., 来週, 来月, 2024年2月). 
 Input: 来週に入社する従業員
 Output: 
 {{
@@ -75,7 +98,7 @@ Output:
     "retired_at_to": ""
 }}
 
-For example 3: If the input mentions only a single point in time, such as "before May" or "from January 2025" or "after 2025-01-01", we assign values to only one field depending on the context:
+For example: Single point time - If the input mentions only a single point in time, such as "before May" or "from January 2025" or "after 2025-01-01", we assign values to only one field depending on the context:
     - For "after" (e.g., "after 2025-01-01") or "from" (e.g., from January 2025), we assign the date to either joined_at_from or retired_at_from, depending on whether the context is about joining or retiring and leave joined_at_to and retired_at_to empty.
     - For "before" (e.g., "before May"), we assign the date to either joined_at_to or retired_at_to, again based on the context.
 Input: "2025年5月より前に入社した従業員を教えてください。"
@@ -93,7 +116,9 @@ Output:
     "retired_at_to": ""
 }}
 
-For example 4:  if the input refers a single point in time that actually spans a longer period, such as "in May", "this week", "next week", "last year", etc, then assign both the beginning and end of that period to the appropriate date fields.
+For example: A period of time 
+- If the input refers to a single point in time that actually represents a span (e.g., "in May", "this week", "next year", "2024年2月"), then assign both the beginning and end of that period to the appropriate date fields. 
+- For example "in May" → assign from: 2025-05-01, to: 2025-05-31 .
 Input: 8月に入社した従業員
 Output: 
 {{
@@ -108,8 +133,22 @@ Output:
     "retired_at_from": "",
     "retired_at_to": ""
 }}
+Input: 2024年2月に退職した社員  
+Output: 
+{{
+    "name_or_number": "",
+    "login_address": "",
+    "group_id": "",
+    "authority_type": "",
+    "connected": "",
+    "status": "退職予定",
+    "joined_at_from": "",
+    "joined_at_to": "",
+    "retired_at_from": "2024-02-01",
+    "retired_at_to": "2024-02-29"
+}}
 
-For example 5: We have context: today is Friday 2025-05-30, if the input refers to multiple point in time, e.g. input is from today to the end of December, then output MUST be *at_from: 2025-05-30, *at_to: 2025-12-31.
+For example: Calculate multiple time point - We have context (use this content only for this example): today is Friday 2025-05-30, and the input refers to multiple point in time, e.g. input is from today to the end of December, then output MUST be *at_from: 2025-05-30, *at_to: 2025-12-31.
 Input: 10月までに退職する予定がある全権管理者
 Output:
 {{
@@ -125,23 +164,7 @@ Output:
     "retired_at_to": "2025-10-31"
 }}
 
-For example:
-Input: 2022年4月に入社し、2024年3月に退職した社員
-Output: 
-{{
-    "name_or_number": "",
-    "login_address": "",
-    "group_id": "",
-    "authority_type": "",
-    "connected": "",
-    "status": "退職済み",
-    "joined_at_from": "2022-04-01",
-    "joined_at_to": "2022-04-30",
-    "retired_at_from": "2024-03-01",
-    "retired_at_to": "2024-03-31"
-}}
-
-For example: 
+For example: Exactly time
 Input: 伊藤健太さんが1月11日に入社した従業員
 Output: 
 {{
@@ -150,14 +173,14 @@ Output:
     "group_id": "",
     "authority_type": "",
     "connected": "",
-    "status": "退職済み",
-    "joined_at_from": "2025-01-01",
-    "joined_at_to": "2022-04-30",
-    "retired_at_from": "2024-03-01",
-    "retired_at_to": "2024-03-31"
+    "status": "",
+    "joined_at_from": "2025-01-11",
+    "joined_at_to": "2025-01-11",
+    "retired_at_from": "",
+    "retired_at_to": ""
 }}
 
-
+Do not infer time when none is mentioned.
 Now, base on Today is {today}, extract the details from the following user input:
 {user_input}
 
